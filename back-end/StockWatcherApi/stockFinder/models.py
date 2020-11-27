@@ -6,5 +6,6 @@ class Stock(models.Model):
     """
     name = models.CharField(max_length = 60)
     ticker = models.CharField(max_length = 10)
+    region = models.CharField(max_length = 50, default='')
 
 

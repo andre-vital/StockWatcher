@@ -3,12 +3,12 @@ from django.http import HttpResponse
 from .models import Stock
 import json
 import requests
-
 # Create your views here.
 
 def searchStock(request):
     """
-    Searchs for a stock using it's ticker.
+    Searchs for a stock using it's ticker and saves basic information if theres no entry
+    on the database for the given ticker.
 
     parameters:
     -ticker: symbol used for lookup on an external API
@@ -23,15 +23,23 @@ def searchStock(request):
             ticker = stockData['ticker']
             key = '6f027336'
             url = f'https://api.hgbrasil.com/finance/stock_price?key={key}&symbol={ticker}'
-            externalResponse = requests.get(url)
-
+            response = requests.get(url)
+            data = json.loads(response.text)
+            if not Stock.objects.filter(ticker = ticker).exists():
+                for key in data['results']:
+                    stock = Stock(
+                        name = data['results'][key]['name'],
+                        ticker = ticker,
+                        region = data['results'][key]['region']
+                    )
+                    stock.save()
 
         except Exception as e:
-            externalResponse = json.dumps({'Error': "something went wrong"})
+            response = json.dumps({'Error': "something went wrong"})
             print(e)
             
 
-    return HttpResponse(externalResponse, content_type='application/json')
+    return HttpResponse(response, content_type='application/json')
 
 def getStockList(request):
     """
@@ -47,7 +55,7 @@ def getStockList(request):
     if request.method == 'GET':
         try:
             stockList = list(Stock.objects.all().values())
-            response = json.dumps(stockList, cls=DjangoJSONEncoder)
+            response = json.dumps(stockList)
 
         except Exception as e:
             print(e)
