@@ -39,7 +39,7 @@ def signup(request):
                     email = signupData['email'],
                 )
 
-                # user.save()
+                user.save()
 
                 response = json.dumps({'message': 'Created User'})
 
@@ -52,7 +52,7 @@ def signup(request):
 
     return HttpResponse(response, content_type='application/json')
  
- def login(request):
+def login(request):
     """
     Logs into the platform.
 
@@ -63,3 +63,5 @@ def signup(request):
     output:
     logs into the platform and creates a token for validation.
     """
+    response = json.dumps({'login': 'Tried to log in'})
+    return HttpResponse(response, content_type='application/json')

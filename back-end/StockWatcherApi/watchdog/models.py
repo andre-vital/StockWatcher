@@ -6,13 +6,13 @@ from accounts.models import User
 class MyStock(models.Model):
     """
     """
-    stock = models.ForeignKey('Stock', on_delete=models.CASCADE)
-    user = models.ForeignKey('User', on_delete=models.CASCADE)
+    stock = models.ForeignKey(Stock, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     updateInterval = models.IntegerField()
     lowPrice = models.FloatField()
     highPrice = models.FloatField()
 
-class Values(models.Model):
+class Value(models.Model):
     """
     """
     myStock = models.ForeignKey('MyStock', on_delete=models.CASCADE)

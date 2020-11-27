@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Stock
 import json
+import requests
 
 # Create your views here.
 
@@ -20,16 +21,17 @@ def searchStock(request):
         try:
             stockData = request.POST
             ticker = stockData['ticker']
-                #external request
-
-            else:
+            key = '6f027336'
+            url = f'https://api.hgbrasil.com/finance/stock_price?key={key}&symbol={ticker}'
+            externalResponse = requests.get(url)
 
 
         except Exception as e:
+            externalResponse = json.dumps({'Error': "something went wrong"})
             print(e)
             
 
-    return HttpResponse(res, content_type='application/json')
+    return HttpResponse(externalResponse, content_type='application/json')
 
 def getStockList(request):
     """
