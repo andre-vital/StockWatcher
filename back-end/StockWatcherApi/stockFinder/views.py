@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Stock
+from utils.getStockInfo import getStockInfo
 import json
-import requests
 # Create your views here.
 
 def searchStock(request):
@@ -22,9 +22,8 @@ def searchStock(request):
             stockData = request.POST
             ticker = stockData['ticker']
             key = '6f027336'
-            url = f'https://api.hgbrasil.com/finance/stock_price?key={key}&symbol={ticker}'
-            response = requests.get(url)
-            data = json.loads(response.text)
+            data = getStockInfo(ticker, key)
+
             if not Stock.objects.filter(ticker = ticker).exists():
                 for key in data['results']:
                     stock = Stock(
