@@ -34,8 +34,7 @@ def addToMyStock(request):
             )
             controlledStock.save()
             
-            key = '6f027336'
-            data = getStockInfo(stock.ticker, key)
+            data = getStockInfo(stock.ticker)
             marketData = data['results'][stock.ticker]
             stockValues = Value(
                 controlledStock = controlledStock,
@@ -64,33 +63,12 @@ def configureStock(request):
 
     output:
     """
-
     if request.method == 'POST':
         try:
             stockData = request.POST
             stockId = stockData['stockId']
             userId = stockData['userId']
-
-            stock = Stock.objects.filter(id = stockId)
-            user = User.objects.filter(id = userId)
-            controlledStock = ControlledStock(
-                stock = stock,
-                user = user
-            )
-            controlledStock.save()
-
-            key = '6f027336'
-            data = getStockInfo(stock.ticker, key)
-            marketData = data['results'][stock.ticker]
-            stockValues = Values(
-                controlledStock = controlledStock,
-                marketCap = marketData['market_cap'],
-                price = marketData['price'],
-                changePercentage = marketData['change_percent'],
-                updatedAt = marketData['updated_at']
-            )
-            stockValues.save()
-
+            
         except Exception as e:
             response = json.dumps({'Error': "something went wrong"})
             print(e)
