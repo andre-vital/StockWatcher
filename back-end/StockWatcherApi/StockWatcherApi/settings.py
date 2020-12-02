@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'emails',
     'watchdog',
     'accounts',
-    'stockFinder'
+    'stockFinder',
+    'django_crontab'
 ]
 
 MIDDLEWARE = [
@@ -116,7 +117,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -126,3 +127,21 @@ STATIC_URL = '/static/'
 
 AVATAR_URL = '/assets/avatar/images'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'assets/avatar/images')
+
+# CRONJOBS = [
+#     ('* * * * *', 'watchdog.watchdogCron.testPrinter')
+# ]
+
+BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_IMPORTS = ['watchdog.tasks']
+# CELERY_BEAT_SCHEDULE = {
+#     "watchdog.tasks.testPrinter": {
+#         "task": "watchdog.tasks.testPrinter",
+#         "schedule": 5.0,
+#     },
+# }
+# CELERY_TIMEZONE = 'Africa/Nairobi'

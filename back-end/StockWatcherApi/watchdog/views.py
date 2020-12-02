@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import MyStock, Values
+from .models import ControlledStock, Value
 from stockFinder.models import Stock
 from accounts.models import User
 from utils.getStockInfo import getStockInfo
+from datetime import datetime
 import json
 
 # Create your views here.
@@ -13,8 +14,8 @@ def addToMyStock(request):
     Adds a specified stock to an users Stock list.
 
     parameters:
-    -stockId: to link the MyStock table with the Stock table
-    -userId: to link the MyStock table with the User table
+    -stockId: to link the ControlledStock table with the Stock table
+    -userId: to link the ControlledStock table with the User table
 
     output:
     """
@@ -25,26 +26,27 @@ def addToMyStock(request):
             stockId = stockData['stockId']
             userId = stockData['userId']
 
-            stock = Stock.objects.filter(id = stockId)
-            user = User.objects.filter(id = userId)
-            myStock = MyStock(
+            stock = Stock.objects.get(id = stockId)
+            user = User.objects.get(id = userId)
+            controlledStock = ControlledStock(
                 stock = stock,
                 user = user
             )
-            myStock.save()
-
+            controlledStock.save()
+            
             key = '6f027336'
             data = getStockInfo(stock.ticker, key)
             marketData = data['results'][stock.ticker]
-            stockValues = Values(
-                myStock = myStock,
+            stockValues = Value(
+                controlledStock = controlledStock,
                 marketCap = marketData['market_cap'],
                 price = marketData['price'],
                 changePercentage = marketData['change_percent'],
-                updatedAt = marketData['updated_at']
+                updatedAt = datetime.strptime(marketData['updated_at'], '%Y-%m-%d %H:%M:%S')
             )
             stockValues.save()
-
+            
+            response = json.dumps(stockValues.id)
         except Exception as e:
             response = json.dumps({'Error': "something went wrong"})
             print(e)
@@ -57,8 +59,8 @@ def configureStock(request):
     Adds a specified stock to an users Stock list.
 
     parameters:
-    -stockId: to link the MyStock table with the Stock table
-    -userId: to link the MyStock table with the User table
+    -stockId: to link the ControlledStock table with the Stock table
+    -userId: to link the ControlledStock table with the User table
 
     output:
     """
@@ -71,17 +73,17 @@ def configureStock(request):
 
             stock = Stock.objects.filter(id = stockId)
             user = User.objects.filter(id = userId)
-            myStock = MyStock(
+            controlledStock = ControlledStock(
                 stock = stock,
                 user = user
             )
-            myStock.save()
+            controlledStock.save()
 
             key = '6f027336'
             data = getStockInfo(stock.ticker, key)
             marketData = data['results'][stock.ticker]
             stockValues = Values(
-                myStock = myStock,
+                controlledStock = controlledStock,
                 marketCap = marketData['market_cap'],
                 price = marketData['price'],
                 changePercentage = marketData['change_percent'],

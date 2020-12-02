@@ -3,20 +3,21 @@ from stockFinder.models import Stock
 from accounts.models import User
 
 # Create your models here.
-class MyStock(models.Model):
+class ControlledStock(models.Model):
     """
     """
     stock = models.ForeignKey(Stock, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    updateInterval = models.IntegerField()
-    lowPrice = models.FloatField()
-    highPrice = models.FloatField()
+    updateInterval = models.IntegerField(default = 0)
+    lowPrice = models.FloatField(default = 0)
+    highPrice = models.FloatField(default = 0)
 
 class Value(models.Model):
     """
     """
-    myStock = models.ForeignKey('MyStock', on_delete=models.CASCADE)
+    controlledStock = models.ForeignKey('ControlledStock', on_delete=models.CASCADE)
     marketCap = models.FloatField()
     price = models.FloatField()
     changePercentage = models.FloatField()
-    updatedAt = models.DateField()
+    updatedAt = models.DateTimeField()
+    entryTime = models.DateTimeField(auto_now_add=True)

@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from .models import Stock
 from utils.getStockInfo import getStockInfo
 import json
+
 # Create your views here.
 
 def searchStock(request):
@@ -21,17 +22,17 @@ def searchStock(request):
         try:
             stockData = request.POST
             ticker = stockData['ticker']
-            key = '6f027336'
-            data = getStockInfo(ticker, key)
-
+            data = getStockInfo(ticker)
             if not Stock.objects.filter(ticker = ticker).exists():
                 for key in data['results']:
                     stock = Stock(
                         name = data['results'][key]['name'],
-                        ticker = ticker,
+                        ticker = key,
                         region = data['results'][key]['region']
                     )
                     stock.save()
+            
+            response = json.dumps(stock.id)
 
         except Exception as e:
             response = json.dumps({'Error': "something went wrong"})
