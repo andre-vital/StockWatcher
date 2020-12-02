@@ -9,8 +9,8 @@ class ControlledStock(models.Model):
     stock = models.ForeignKey(Stock, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     updateInterval = models.IntegerField(default = 0)
-    lowPrice = models.FloatField(default = 0)
-    highPrice = models.FloatField(default = 0)
+    buyPrice = models.FloatField(default = 0)
+    sellPrice = models.FloatField(default = 0)
 
 class Value(models.Model):
     """
