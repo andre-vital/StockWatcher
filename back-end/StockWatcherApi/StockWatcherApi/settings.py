@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     'watchdog',
     'accounts',
     'stockFinder',
-    'django_crontab'
 ]
 
 MIDDLEWARE = [

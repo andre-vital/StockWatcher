@@ -11,6 +11,7 @@ class ControlledStock(models.Model):
     updateInterval = models.IntegerField(default = 0)
     buyPrice = models.FloatField(default = 0)
     sellPrice = models.FloatField(default = 0)
+    active = models.BooleanField(default = True)
 
 class Value(models.Model):
     """
