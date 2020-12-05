@@ -1,0 +1,21 @@
+.main-stock-table-container {
+  display: flex;
+  /* flex: 0.9; */
+  height: 95vh;
+  width: 100vw;
+  /* position: fixed; */
+  justify-items: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.main-stock-table {
+  /* flex: 0.9; */
+  float: 1;
+  /* position: fixed; */
+  height: 80%;
+  width: 80vw;
+  /* justify-self: center;
+  align-self: center; */
+  overflow: hidden;
+}

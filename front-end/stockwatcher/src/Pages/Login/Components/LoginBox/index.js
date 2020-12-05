@@ -2,6 +2,7 @@ import { Form, Input, Button, Checkbox } from "antd";
 import TextField from "@material-ui/core/TextField";
 import { withStyles, createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
+import { useHistory } from "react-router-dom";
 import React from "react";
 import "./styles.css";
 
@@ -28,6 +29,7 @@ const CssTextField = withStyles({
     },
   },
 })(TextField);
+
 const theme = createMuiTheme({
   overrides: {
     MuiTextField: {
@@ -39,6 +41,7 @@ const theme = createMuiTheme({
 });
 
 const LoginBox = () => {
+  const history = useHistory();
   // const classes = useStyles();
   const onFinish = (values) => {
     console.log("Success:", values);
@@ -105,6 +108,10 @@ const LoginBox = () => {
           type="primary"
           block={true}
           className="login-page-login-box-button"
+          onClick={() => {
+            history.push("/main");
+            console.log("coe");
+          }}
         >
           Login
         </Button>
