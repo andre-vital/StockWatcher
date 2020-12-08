@@ -6,6 +6,7 @@ from .models import ControlledStock, Value
 from stockFinder.models import Stock
 from accounts.models import User
 from utils.getStockInfo import getStockInfo
+from utils.filterByTimeInterval import filterByTimeInterval
 from datetime import datetime, timedelta
 import json
 
@@ -105,6 +106,7 @@ def getStockValuesByTimeDiff(request):
     output:
     No output.
     """
+
     if request.method == 'POST':
         try:
             stockData = request.POST
@@ -114,17 +116,9 @@ def getStockValuesByTimeDiff(request):
             controlledStock = ControlledStock.objects.get(stock__id=stockId, user__id=userId)
             controlledStockValues = list(Value.objects.filter(controlledStock = controlledStock).values())
 
-            lastControlledStockValue = controlledStockValues[0]
-            specifiedControlledStockValuesList = [lastControlledStockValue]
-
-            for controlledStockValue in controlledStockValues:
-                timeDiff = controlledStockValue['entryTime'] - lastControlledStockValue['entryTime']
-
-                if timeDiff >= timedelta(minutes=controlledStock.updateInterval):
-                    lastControlledStockValue = controlledStockValue
-                    specifiedControlledStockValuesList.append(controlledStockValue)
-
-            response = json.dumps(specifiedControlledStockValuesList,  cls=DjangoJSONEncoder)
+            specifiedValuesList = filterByTimeInterval(controlledStockValues, controlledStock)
+            
+            response = json.dumps(specifiedValuesList,  cls=DjangoJSONEncoder)
 
         except ObjectDoesNotExist as e:
             print(e)
@@ -163,11 +157,12 @@ def getAllControlledStock(request):
                 allValues['buyPrice'] = controlledStock.buyPrice
                 allValues['sellPrice'] = controlledStock.sellPrice
                 allValues['updateInterval'] = controlledStock.updateInterval
-                allValues['values'] = controlledStockValues
+                allValues['values'] = filterByTimeInterval(controlledStockValues, controlledStock)
                 allValues['values'].reverse()
                 
                 myStocks.append(allValues)
             
+            print(myStocks)
             response = json.dumps(myStocks, cls=DjangoJSONEncoder)
 
         except Exception as e:
