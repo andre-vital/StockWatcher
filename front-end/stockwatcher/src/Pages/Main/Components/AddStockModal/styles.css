@@ -1,0 +1,44 @@
+.main-add-stock-modal-container {
+  height: 70vh;
+  width: 70vw;
+  /* width: 100vw; */
+  display: flex;
+
+  flex-wrap: wrap;
+
+  flex-direction: column;
+}
+
+/* .main-add-stock-modal-container {
+  height: 40vh;
+  width: 70vw;
+  display: flex;
+  background-color: white;
+  align-self: center;
+} */
+
+.main-add-stock-modal-upper {
+  flex: 0.2;
+  display: flex;
+  width: 100%;
+  margin: 200;
+  justify-content: end;
+  align-content: end;
+  /* background-color: royalblue; */
+}
+
+.main-add-stock-modal-upper-box {
+  /* margin: 200; */
+  display: flex;
+  /* padding-right: 15; */
+  /* width: 40%;
+  height: 60%; */
+  justify-content: end;
+  /* background-color: green; */
+}
+
+.main-add-stock-modal-body {
+  flex: 0.8;
+  width: 100%;
+  background-color: green;
+}

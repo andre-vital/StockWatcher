@@ -41,11 +41,9 @@ const rows = [
 const StockTable = () => {
   return (
     <div className="main-stock-table-container">
-      <div className="main-stock-table">
-        <TableContainer component={Paper}>
-          <DataGrid rows={rows} columns={columns} pageSize={5} />
-        </TableContainer>
-      </div>
+      <TableContainer component={Paper} className="main-stock-table">
+        <DataGrid rows={rows} columns={columns} />
+      </TableContainer>
     </div>
   );
 };
