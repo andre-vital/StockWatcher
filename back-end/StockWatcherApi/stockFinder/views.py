@@ -23,6 +23,8 @@ def searchStock(request):
             stockData = request.POST
             ticker = stockData['ticker']
             data = getStockInfo(ticker)
+            print(data)
+            print(ticker)
             if not Stock.objects.filter(ticker = ticker).exists():
                 for key in data['results']:
                     stock = Stock(
@@ -32,8 +34,8 @@ def searchStock(request):
                     )
                     stock.save()
             
-            response = json.dumps(stock.id)
-
+            response = json.dumps(data['results'][ticker])
+            print(data['results'][ticker])
         except Exception as e:
             response = json.dumps({'Error': "something went wrong"})
             print(e)
@@ -54,7 +56,9 @@ def getStockList(request):
 
     if request.method == 'GET':
         try:
+            print('???')
             stockList = list(Stock.objects.all().values())
+            print(stockList)
             response = json.dumps(stockList)
 
         except Exception as e:
