@@ -5,4 +5,5 @@ urlpatterns = [
     path('add', views.addToControlledStock),
     path('configure', views.configureStock),
     path('values', views.getStockValuesByTimeDiff),
+    path('retrieve/all', views.getAllControlledStock)
 ]

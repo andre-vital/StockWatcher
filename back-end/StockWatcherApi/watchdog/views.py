@@ -77,17 +77,12 @@ def configureStock(request):
             stockData = request.POST
             stockId = stockData['stockId']
             userId = stockData['userId']
-            try:
-                controlledStock = ControlledStock.objects.get(stock__id=stockId, user__id=userId)
-                controlledStock.updateInterval = stockData['updateInterval']
-                controlledStock.buyPrice = stockData['buyPrice']
-                controlledStock.sellPrice = stockData['sellPrice']
-                controlledStock.save()
-                response = json.dumps(controlledStock.id)
-
-            except Exception as e:
-                response = json.dumps({'Error': "couldn't retrieve controlled stock"})
-                print(e)
+            controlledStock = ControlledStock.objects.get(stock__id=stockId, user__id=userId)
+            controlledStock.updateInterval = stockData['updateInterval']
+            controlledStock.buyPrice = stockData['buyPrice']
+            controlledStock.sellPrice = stockData['sellPrice']
+            controlledStock.save()
+            response = json.dumps(controlledStock.id)
 
         except Exception as e:
             response = json.dumps({'Error': "something went wrong"})
@@ -100,8 +95,8 @@ def getStockValuesByTimeDiff(request):
     Sets buyPrice, sellPrice and the updateInterval to a specific controlled stock.
 
     parameters:
-    -stockId: to link the ControlledStock table with the Stock table
-    -userId: to link the ControlledStock table with the User table
+    -stockId: to link the ControlledStock table with the Stock table.
+    -userId: to link the ControlledStock table with the User table.
     -buyPrice: the desired price to buy.
     -sellPrice: the desired price to sell.
     -updateInterval: desired time interval to retrieve more information regarding
@@ -139,4 +134,44 @@ def getStockValuesByTimeDiff(request):
             print(e)
             response = json.dumps({'Error': "couldn't retrieve controlled stock"})
        
+    return HttpResponse(response, content_type='application/json')
+
+def getAllControlledStock(request):
+    """
+    Retrieves every controlled stock from database.
+
+    parameters:
+    -userId: to specify from which user it should fetch the controlledStocks.
+
+    output:
+    An array of dicts containing every entry saved of every controlled stock 
+    of a specific user.
+    """
+    if request.method == 'POST':
+        try:
+            stockData = request.POST
+            userId = stockData['userId']
+
+            controlledStocks = ControlledStock.objects.filter(user__id=userId)
+            myStocks = []
+
+            for controlledStock in controlledStocks:
+                controlledStockValues = list(Value.objects.filter(controlledStock = controlledStock).values())
+
+                allValues = {}
+                allValues['name'] = controlledStock.stock.name
+                allValues['buyPrice'] = controlledStock.buyPrice
+                allValues['sellPrice'] = controlledStock.sellPrice
+                allValues['updateInterval'] = controlledStock.updateInterval
+                allValues['values'] = controlledStockValues
+                allValues['values'].reverse()
+                
+                myStocks.append(allValues)
+            
+            response = json.dumps(myStocks, cls=DjangoJSONEncoder)
+
+        except Exception as e:
+            response = json.dumps({'Error': "something went wrong"})
+            print(e)
+            
     return HttpResponse(response, content_type='application/json')
