@@ -1,86 +1,57 @@
 import React, { useEffect, useState } from "react";
-import { DataGrid } from "@material-ui/data-grid";
-import { IconButton, Paper, TableContainer } from "@material-ui/core";
-import { withStyles, makeStyles } from "@material-ui/core/styles";
+import { Paper, TableContainer } from "@material-ui/core";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import Collapse from "@material-ui/core/Collapse";
-import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import getAllControlledStock from "../../Requests/getAllControlledStock";
 import "./styles.css";
-import Chart from "../Chart";
-const useStyles = makeStyles({
-  table: {
-    minWidth: 700,
-    mindHeight: 300,
-    margin: 20,
-    height: 500,
-  },
-});
+import StockTableRow from "./StockTableRow";
+import { useStyles } from "./MuiStyles";
+import editStockInfo from "../../Requests/editStockInfo";
 
 const StockTable = () => {
   const [controlledStock, setControlledStock] = useState([]);
-  const [open, setOpen] = useState(false);
+  const classes = useStyles();
 
   async function fetchControlledStock() {
-    setControlledStock(await getAllControlledStock(1));
+    setControlledStock(await getAllControlledStock());
   }
+  async function editStock(data) {
+    await editStockInfo(data);
+    await fetchControlledStock();
+  }
+
+  const tableHeader = [
+    "Valor",
+    "Compra",
+    "Venda",
+    "Valor de mercado",
+    "Intervalo de Atualização",
+  ];
 
   useEffect(() => {
     fetchControlledStock();
-  }, []);
-  const classes = useStyles();
+  });
+
   return (
     <div className="main-stock-table-container">
       <TableContainer className={classes.table} component={Paper}>
-        <Table aria-label="customized table">
+        <Table stickyHeader aria-label="customized table">
           <TableHead>
             <TableRow className="main-stock-table-row">
               <TableCell />
               <TableCell>Empresa</TableCell>
-              <TableCell align="right">Valor</TableCell>
-              <TableCell align="right">Compra</TableCell>
-              <TableCell align="right">Venda</TableCell>
-              <TableCell align="right">Valor de mercado</TableCell>
-              <TableCell align="right">Intervalo de Atualização</TableCell>
+              {tableHeader.map((name) => (
+                <TableCell align="right">{name}</TableCell>
+              ))}
+              <TableCell />
             </TableRow>
           </TableHead>
           <TableBody>
             {controlledStock.map((row) => (
-              <>
-                <TableRow key={row.name}>
-                  <IconButton
-                    aria-label="expand row"
-                    size="small"
-                    onClick={() => setOpen(!open)}
-                  >
-                    {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                  </IconButton>
-
-                  <TableCell component="th" scope="row">
-                    {row?.name}
-                  </TableCell>
-                  <TableCell align="right">{row?.values[0].price}</TableCell>
-                  <TableCell align="right">{row?.buyPrice}</TableCell>
-                  <TableCell align="right">{row?.sellPrice}</TableCell>
-                  <TableCell align="right">
-                    {row?.values[0].marketCap}
-                  </TableCell>
-                  <TableCell align="right">{row?.updateInterval}</TableCell>
-                </TableRow>
-                <TableCell
-                  style={{ paddingBottom: 0, paddingTop: 0 }}
-                  colSpan={6}
-                >
-                  <Collapse in={open} timeout="auto" unmountOnExit>
-                    <Chart data={row?.values} />
-                  </Collapse>
-                </TableCell>
-              </>
+              <StockTableRow rowData={row} editInfo={editStock} />
             ))}
           </TableBody>
         </Table>

@@ -13,11 +13,13 @@ import "./styles.css";
 
 const Chart = ({ data }) => {
   const [newData, setNewData] = useState([]);
-
+  console.log(data);
   useEffect(() => {
     setNewData(
-      data.map((entry) => ({
+      data?.values.map((entry) => ({
         ...entry,
+        buyPrice: data?.buyPrice,
+        sellPrice: data?.sellPrice,
         newUpdatedAt: new Date(entry.updatedAt).toLocaleTimeString(
           "UTC",
           "short"
@@ -40,7 +42,19 @@ const Chart = ({ data }) => {
           <YAxis />
           <Tooltip />
           <Legend />
-          <Line type="monotone" dataKey="price" stroke="#8884d8" />
+          <Line type="monotone" dataKey="price" stroke="#8884d8" name="preço" />
+          <Line
+            type="monotone"
+            dataKey="buyPrice"
+            stroke="#15f211"
+            name="compra"
+          />
+          <Line
+            type="monotone"
+            dataKey="sellPrice"
+            stroke="#c21717"
+            name="venda"
+          />
         </LineChart>
       </ResponsiveContainer>
     </div>

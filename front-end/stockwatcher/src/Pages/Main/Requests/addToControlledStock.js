@@ -1,13 +1,14 @@
 import url from "../../../config";
 
-async function getAllControlledStock() {
+async function addToControlledStock(ticker) {
   let form = new FormData();
   const token = localStorage.getItem("token");
   form.append("token", token);
-  const res = await fetch(`${url}/my/stock/retrieve/all`, {
+  form.append("ticker", ticker);
+  const res = await fetch(`${url}/my/stock/add`, {
     method: "POST",
     body: form,
   });
   return res.json();
 }
-export default getAllControlledStock;
+export default addToControlledStock;

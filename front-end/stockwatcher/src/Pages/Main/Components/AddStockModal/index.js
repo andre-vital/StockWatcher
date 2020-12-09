@@ -7,6 +7,7 @@ import "./styles.css";
 import { Button, Paper } from "@material-ui/core";
 import getStockList from "../../Requests/getStockList";
 import searchStock from "../../Requests/searchStock";
+import addToControlledStock from "../../Requests/addToControlledStock";
 import ListItem from "../ListItem";
 import { useStyles } from "./MuiStyles";
 
@@ -21,6 +22,10 @@ const AddStockModal = () => {
   async function fetchStockInfo(ticker) {
     setStockInfo(await searchStock(ticker));
   }
+  async function addStock(ticker) {
+    await addToControlledStock(ticker);
+  }
+
   const stockDetails = {
     firstHalf: [
       { title: "Empresa:", value: stockInfo?.company_name },
@@ -50,6 +55,7 @@ const AddStockModal = () => {
                 variant="contained"
                 color="primary"
                 className={classes.margin}
+                onClick={() => addStock(stockInfo?.symbol)}
               >
                 Adicionar : {stockInfo?.company_name}
               </Button>

@@ -4,13 +4,14 @@ import Header from "../../GlobalComponents/Header";
 import StockTable from "./Components/StockTable";
 import AddStockModal from "./Components/AddStockModal";
 
-const MainPage = () => {
+const MainPage = ({ ...props }) => {
+  console.log({ props });
   return (
     <div className="main-page-wrapper">
       <Header>
-        <AddStockModal />
+        <AddStockModal {...props} />
       </Header>
-      <StockTable />
+      <StockTable {...props} />
     </div>
   );
 };
