@@ -1,50 +1,35 @@
-import { Form, Input, Button, Checkbox } from "antd";
-import TextField from "@material-ui/core/TextField";
-import { withStyles, createMuiTheme } from "@material-ui/core/styles";
+import { Form, Button } from "antd";
 import { ThemeProvider } from "@material-ui/styles";
 import { useHistory } from "react-router-dom";
-import React from "react";
+import React, { useState } from "react";
 import "./styles.css";
-
-const CssTextField = withStyles({
-  root: {
-    color: "white",
-    "& label.Mui-focused": {
-      color: "white",
-    },
-    // "& .MuiInput-underline:after": {
-    //   borderBottomColor: "white",
-    // },
-    "& .MuiOutlinedInput-root": {
-      color: "white",
-      "& fieldset": {
-        borderColor: "white",
-      },
-      "&:hover fieldset": {
-        borderColor: "white",
-      },
-      "&.Mui-focused fieldset": {
-        borderColor: "white",
-      },
-    },
-  },
-})(TextField);
-
-const theme = createMuiTheme({
-  overrides: {
-    MuiTextField: {
-      root: {
-        margin: 15,
-      },
-    },
-  },
-});
+import { CssTextField } from "./CssTextField";
+import { theme } from "./MuiTheme";
+import attemptLogin from "../../Requests/attemptLogin";
 
 const LoginBox = () => {
   const history = useHistory();
-  // const classes = useStyles();
+  const [userData, setUserData] = useState({
+    username: "",
+    password: "",
+  });
+
   const onFinish = (values) => {
     console.log("Success:", values);
+  };
+  async function handleLogin() {
+    const result = await attemptLogin(userData);
+    console.log({ result });
+    if (result) {
+      history.push("/main");
+    }
+  }
+
+  const handleChange = (event) => {
+    setUserData({
+      ...userData,
+      [event.target.name]: event.target.value,
+    });
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -54,22 +39,17 @@ const LoginBox = () => {
   return (
     <div className="login-page-login-box">
       <Form
-        // {...layout}
         name="basic"
         initialValues={{ remember: true }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
       >
-        <Form.Item
-          //   label="Username"
-          //   name="username"
-          //   rules={[{ required: true, message: "Please input your username!" }]}
-          className={"login-page-login-box-item"}
-        >
+        <Form.Item className={"login-page-login-box-item"}>
           <ThemeProvider theme={theme}>
             <CssTextField
               id="standard-basic"
               label="Username"
+              name="username"
               InputLabelProps={{
                 style: { color: "white" },
                 shrink: true,
@@ -77,9 +57,8 @@ const LoginBox = () => {
               }}
               variant="outlined"
               color="primary"
+              onChange={handleChange}
               className={"login-page-login-box-input"}
-              //   shrink="true"
-              // className={classes.textField}
             />
           </ThemeProvider>
         </Form.Item>
@@ -88,6 +67,7 @@ const LoginBox = () => {
           <CssTextField
             id="standard-basic"
             label="Password"
+            name="password"
             InputLabelProps={{
               style: { color: "white" },
               shrink: true,
@@ -95,28 +75,20 @@ const LoginBox = () => {
             }}
             variant="outlined"
             color="primary"
+            onChange={handleChange}
             className={"login-page-login-box-input"}
           />
         </Form.Item>
-        {/* <Form.Item name="remember" valuePropName="checked">
-          <Checkbox>Remember me</Checkbox>
-        </Form.Item> */}
-
-        {/* <Form.Item> */}
-        {/* <div className="login-page-login-box-button"> */}
         <Button
           type="primary"
           block={true}
           className="login-page-login-box-button"
           onClick={() => {
-            history.push("/main");
-            console.log("coe");
+            handleLogin();
           }}
         >
           Login
         </Button>
-        {/* </div> */}
-        {/* </Form.Item> */}
       </Form>
     </div>
   );
