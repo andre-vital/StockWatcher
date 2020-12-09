@@ -7,6 +7,7 @@ from stockFinder.models import Stock
 from accounts.models import User
 from utils.getStockInfo import getStockInfo
 from utils.filterByTimeInterval import filterByTimeInterval
+from utils.decodeToken import recoverUserIdFromToken
 from datetime import datetime, timedelta
 import json
 
@@ -17,7 +18,7 @@ def addToControlledStock(request):
     Adds a specified stock to an users Stock list.
 
     parameters:
-    -stockId: to link the ControlledStock table with the Stock table
+    -ticker: to link the ControlledStock table with the Stock table
     -userId: to link the ControlledStock table with the User table
 
     output:
@@ -26,17 +27,19 @@ def addToControlledStock(request):
     if request.method == 'POST':
         try:
             stockData = request.POST
-            stockId = stockData['stockId']
-            userId = stockData['userId']
-            if ControlledStock.objects.filter(stock__id=stockId, user__id=userId).exists():
-                controlledStock = ControlledStock.objects.get(stock__id=stockId, user__id=userId)
+            ticker = stockData['ticker']
+            token = stockData['token']
+            userId = recoverUserIdFromToken(token)
+            if ControlledStock.objects.filter(stock__ticker=ticker, user_id=userId).exists():
+                controlledStock = ControlledStock.objects.get(stock__ticker=ticker, user_id=userId)
                 controlledStock.active = True
                 controlledStock.save()
             
             else:
+                stock = Stock.objects.get(ticker=ticker)
                 controlledStock = ControlledStock(
-                    stock__id = stockId,
-                    user__id = userId
+                    stock = stock,
+                    user_id = userId
                 )
                 controlledStock.save()
                 
@@ -50,7 +53,7 @@ def addToControlledStock(request):
                     updatedAt = datetime.strptime(marketData['updated_at'], '%Y-%m-%d %H:%M:%S')
                 )
                 stockValues.save()
-            response = json.dumps(stockValues.id)
+            response = json.dumps({'success': "added to controlled stock"})
 
         except Exception as e:
             response = json.dumps({'Error': "something went wrong"})
@@ -77,8 +80,10 @@ def configureStock(request):
         try:
             stockData = request.POST
             stockId = stockData['stockId']
-            userId = stockData['userId']
-            controlledStock = ControlledStock.objects.get(stock__id=stockId, user__id=userId)
+            token = stockData['token']
+            userId = recoverUserIdFromToken(token)
+
+            controlledStock = ControlledStock.objects.get(stock_id=stockId, user_id=userId)
             controlledStock.updateInterval = stockData['updateInterval']
             controlledStock.buyPrice = stockData['buyPrice']
             controlledStock.sellPrice = stockData['sellPrice']
@@ -111,9 +116,10 @@ def getStockValuesByTimeDiff(request):
         try:
             stockData = request.POST
             stockId = stockData['stockId']
-            userId = stockData['userId']
+            token = stockData['token']
+            userId = recoverUserIdFromToken(token)
 
-            controlledStock = ControlledStock.objects.get(stock__id=stockId, user__id=userId)
+            controlledStock = ControlledStock.objects.get(stock_id=stockId, user_id=userId)
             controlledStockValues = list(Value.objects.filter(controlledStock = controlledStock).values())
 
             specifiedValuesList = filterByTimeInterval(controlledStockValues, controlledStock)
@@ -144,15 +150,17 @@ def getAllControlledStock(request):
     if request.method == 'POST':
         try:
             stockData = request.POST
-            userId = stockData['userId']
+            token = stockData['token']
+            userId = recoverUserIdFromToken(token)
 
-            controlledStocks = ControlledStock.objects.filter(user__id=userId)
+            controlledStocks = ControlledStock.objects.filter(user_id=userId)
             myStocks = []
 
             for controlledStock in controlledStocks:
                 controlledStockValues = list(Value.objects.filter(controlledStock = controlledStock).values())
 
                 allValues = {}
+                allValues['stockId'] = controlledStock.stock.id
                 allValues['name'] = controlledStock.stock.name
                 allValues['buyPrice'] = controlledStock.buyPrice
                 allValues['sellPrice'] = controlledStock.sellPrice
