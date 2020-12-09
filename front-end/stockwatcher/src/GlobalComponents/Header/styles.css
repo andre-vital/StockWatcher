@@ -4,19 +4,21 @@
   width: 100%;
   overflow: hidden;
   /* position: fixed; */
+  background-color: rgb(216, 216, 216);
 }
 
 .header-left-container {
   flex: 0.25;
-  background-color: aqua;
+  /* background-color: aqua; */
 }
 
 .header-middle-container {
   flex: 0.5;
-  background-color: green;
+  /* background-color: green; */
 }
 
 .header-right-container {
   flex: 0.25;
-  background-color: red;
+
+  /* background-color: red; */
 }

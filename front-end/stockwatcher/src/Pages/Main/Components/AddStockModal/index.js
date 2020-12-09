@@ -4,14 +4,16 @@ import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import "./styles.css";
-import { Paper } from "@material-ui/core";
+import { Button, Paper } from "@material-ui/core";
 import getStockList from "../../Requests/getStockList";
 import searchStock from "../../Requests/searchStock";
 import ListItem from "../ListItem";
+import { useStyles } from "./MuiStyles";
 
 const AddStockModal = () => {
   const [stockList, setStockList] = useState([]);
   const [stockInfo, setStockInfo] = useState({});
+  const classes = useStyles();
 
   async function fetchStockList() {
     setStockList(await getStockList());
@@ -43,39 +45,44 @@ const AddStockModal = () => {
       <Paper elevation={10}>
         <div className="main-add-stock-modal-container">
           <div className="main-add-stock-modal-upper">
-            <div className="main-add-stock-modal-upper-box">
-              <Autocomplete
-                id="combo-box-demo"
-                options={stockList}
-                getOptionLabel={(option) => option?.ticker}
-                style={{ width: 200, padding: 15 }}
-                renderInput={(params) => (
-                  <TextField {...params} label="Combo box" variant="outlined" />
-                )}
-                onInputChange={(event, value) => fetchStockInfo(value)}
-              />
+            <div className="main-add-stock-modal-upper-left">
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.margin}
+              >
+                Adicionar : {stockInfo?.company_name}
+              </Button>
+            </div>
+            <div className="main-add-stock-modal-upper-right">
+              <div className="main-add-stock-modal-upper-box">
+                <Autocomplete
+                  id="combo-box-demo"
+                  options={stockList}
+                  getOptionLabel={(option) => option?.ticker}
+                  style={{ width: 200, padding: 15 }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Combo box"
+                      variant="outlined"
+                    />
+                  )}
+                  onInputChange={(_, value) => fetchStockInfo(value)}
+                />
+              </div>
             </div>
           </div>
           <div className="main-add-stock-modal-body">
             <div className="main-add-stock-modal-body-left">
-              {stockDetails.firstHalf.map((stockDetail) => {
-                return (
-                  <ListItem
-                    title={stockDetail.title}
-                    value={stockDetail.value}
-                  />
-                );
-              })}
+              {stockDetails.firstHalf.map((stockDetail) => (
+                <ListItem title={stockDetail.title} value={stockDetail.value} />
+              ))}
             </div>
             <div className="main-add-stock-modal-body-right">
-              {stockDetails.secondHalf.map((stockDetail) => {
-                return (
-                  <ListItem
-                    title={stockDetail.title}
-                    value={stockDetail.value}
-                  />
-                );
-              })}
+              {stockDetails.secondHalf.map((stockDetail) => (
+                <ListItem title={stockDetail.title} value={stockDetail.value} />
+              ))}
             </div>
           </div>
         </div>

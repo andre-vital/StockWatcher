@@ -16,9 +16,21 @@
   background-color: white;
   align-self: center;
 } */
-
 .main-add-stock-modal-upper {
   flex: 0.2;
+  display: flex;
+  /* width: 100%;
+  margin: 200; */
+  flex-direction: row;
+  /* background-color: royalblue; */
+}
+
+.main-add-stock-modal-upper-left {
+  flex: 0.5;
+}
+
+.main-add-stock-modal-upper-right {
+  flex: 0.5;
   display: flex;
   width: 100%;
   margin: 200;
@@ -35,6 +47,16 @@
   height: 60%; */
   justify-content: flex-end;
   /* background-color: green; */
+}
+.main-add-stock-modal-upper-button {
+  /* margin: 200; */
+  /* display: flex; */
+  /* padding-right: 15; */
+  width: 40%;
+  height: 60%;
+  margin: 15;
+  justify-self: flex-end;
+  background-color: green;
 }
 
 .main-add-stock-modal-body {
