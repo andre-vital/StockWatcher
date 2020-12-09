@@ -1,10 +1,11 @@
-import { Form, Button } from "antd";
+import { Form } from "antd";
 import { ThemeProvider } from "@material-ui/styles";
 import { useHistory } from "react-router-dom";
 import React, { useState } from "react";
 import "./styles.css";
 import { CssTextField } from "./CssTextField";
 import { theme } from "./MuiTheme";
+import { Button } from "@material-ui/core";
 import attemptLogin from "../../Requests/attemptLogin";
 
 const LoginBox = () => {
@@ -13,9 +14,10 @@ const LoginBox = () => {
     username: "",
     password: "",
   });
-
-  const onFinish = (values) => {
-    console.log("Success:", values);
+  const inputProps = {
+    style: { color: "white" },
+    shrink: true,
+    disableAnimation: true,
   };
   async function handleLogin() {
     const result = await attemptLogin(userData);
@@ -32,64 +34,39 @@ const LoginBox = () => {
     });
   };
 
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
-  };
-
   return (
     <div className="login-page-login-box">
-      <Form
-        name="basic"
-        initialValues={{ remember: true }}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
+      <ThemeProvider theme={theme}>
+        <CssTextField
+          id="standard-basic"
+          label="Username"
+          name="username"
+          InputLabelProps={inputProps}
+          variant="outlined"
+          color="primary"
+          onChange={handleChange}
+          className={"login-page-login-box-input"}
+        />
+      </ThemeProvider>
+      <CssTextField
+        id="standard-basic"
+        label="Password"
+        name="password"
+        InputLabelProps={inputProps}
+        variant="outlined"
+        color="primary"
+        onChange={handleChange}
+        className={"login-page-login-box-input"}
+      />
+      <Button
+        variant="contained"
+        color="secondary"
+        onClick={() => {
+          handleLogin();
+        }}
       >
-        <Form.Item className={"login-page-login-box-item"}>
-          <ThemeProvider theme={theme}>
-            <CssTextField
-              id="standard-basic"
-              label="Username"
-              name="username"
-              InputLabelProps={{
-                style: { color: "white" },
-                shrink: true,
-                disableAnimation: true,
-              }}
-              variant="outlined"
-              color="primary"
-              onChange={handleChange}
-              className={"login-page-login-box-input"}
-            />
-          </ThemeProvider>
-        </Form.Item>
-
-        <Form.Item>
-          <CssTextField
-            id="standard-basic"
-            label="Password"
-            name="password"
-            InputLabelProps={{
-              style: { color: "white" },
-              shrink: true,
-              disableAnimation: true,
-            }}
-            variant="outlined"
-            color="primary"
-            onChange={handleChange}
-            className={"login-page-login-box-input"}
-          />
-        </Form.Item>
-        <Button
-          type="primary"
-          block={true}
-          className="login-page-login-box-button"
-          onClick={() => {
-            handleLogin();
-          }}
-        >
-          Login
-        </Button>
-      </Form>
+        Login
+      </Button>
     </div>
   );
 };
