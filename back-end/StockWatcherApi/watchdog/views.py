@@ -170,7 +170,7 @@ def getAllControlledStock(request):
                 
                 myStocks.append(allValues)
             
-            print(myStocks)
+            # print(myStocks)
             response = json.dumps(myStocks, cls=DjangoJSONEncoder)
 
         except Exception as e:

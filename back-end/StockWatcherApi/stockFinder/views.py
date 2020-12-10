@@ -53,9 +53,7 @@ def getStockList(request):
 
     if request.method == 'GET':
         try:
-            print('???')
             stockList = list(Stock.objects.all().values())
-            print(stockList)
             response = json.dumps(stockList)
 
         except Exception as e:
