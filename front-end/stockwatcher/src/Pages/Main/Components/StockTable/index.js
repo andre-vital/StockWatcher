@@ -11,6 +11,8 @@ import StockTableRow from "./StockTableRow";
 import { useStyles } from "./MuiStyles";
 import editStockInfo from "../../Requests/editStockInfo";
 
+const background = { background: "rgb(224, 97, 58)" };
+
 const StockTable = () => {
   const [controlledStock, setControlledStock] = useState([]);
   const classes = useStyles();
@@ -32,8 +34,9 @@ const StockTable = () => {
   ];
 
   useEffect(() => {
+    console.log("teste");
     fetchControlledStock();
-  });
+  }, []);
 
   return (
     <div className="main-stock-table-container">
@@ -41,12 +44,14 @@ const StockTable = () => {
         <Table stickyHeader aria-label="customized table">
           <TableHead>
             <TableRow className="main-stock-table-row">
-              <TableCell />
-              <TableCell>Empresa</TableCell>
+              <TableCell style={background} />
+              <TableCell style={background}>Empresa</TableCell>
               {tableHeader.map((name) => (
-                <TableCell align="right">{name}</TableCell>
+                <TableCell style={background} align="right">
+                  {name}
+                </TableCell>
               ))}
-              <TableCell />
+              <TableCell style={background} />
             </TableRow>
           </TableHead>
           <TableBody>

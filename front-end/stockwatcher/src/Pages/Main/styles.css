@@ -7,3 +7,11 @@
   /* background-color: red; */
   overflow: hidden;
 }
+
+.main-image {
+  object-fit: cover;
+  /* flex: 0; */
+  /* filter: brightness(50%); */
+  /* position: fixed; */
+  z-index: 1;
+}

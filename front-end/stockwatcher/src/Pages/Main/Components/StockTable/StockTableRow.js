@@ -7,6 +7,7 @@ import { IconButton, TextField } from "@material-ui/core";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import Create from "@material-ui/icons/Create";
+import Check from "@material-ui/icons/Check";
 
 const StockTableRow = ({ rowData, editInfo }) => {
   const [open, setOpen] = useState(false);
@@ -86,7 +87,7 @@ const StockTableRow = ({ rowData, editInfo }) => {
         </TableCell>
         <TableCell align="right">
           <IconButton onClick={() => openConfigurables()}>
-            <Create />
+            {edit ? <Check /> : <Create />}
           </IconButton>
         </TableCell>
       </TableRow>

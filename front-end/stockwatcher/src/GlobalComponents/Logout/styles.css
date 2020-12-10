@@ -3,30 +3,22 @@
   height: 5vh;
   width: 100%;
   overflow: hidden;
-  position: fixed;
-  z-index: 30;
-  box-shadow: 1px 1px 5px black;
-  background-color: rgb(224, 97, 58);
+  /* position: fixed; */
+  background-color: rgb(216, 216, 216);
 }
 
 .header-left-container {
   flex: 0.25;
-  background-color: rgb(224, 97, 58);
   /* background-color: aqua; */
 }
 
 .header-middle-container {
   flex: 0.5;
-  background-color: rgb(224, 97, 58);
   /* background-color: green; */
 }
 
 .header-right-container {
-  background-color: rgb(224, 97, 58);
   flex: 0.25;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding-right: 10px;
+
   /* background-color: red; */
 }

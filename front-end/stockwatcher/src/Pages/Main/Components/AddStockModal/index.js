@@ -2,28 +2,40 @@ import React, { useEffect, useState } from "react";
 import { Modal } from "../../../../GlobalComponents/Modal";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import TextField from "@material-ui/core/TextField";
-import Autocomplete from "@material-ui/lab/Autocomplete";
 import "./styles.css";
-import { Button, Paper } from "@material-ui/core";
+import { Button, IconButton, Paper } from "@material-ui/core";
 import getStockList from "../../Requests/getStockList";
 import searchStock from "../../Requests/searchStock";
 import addToControlledStock from "../../Requests/addToControlledStock";
+import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+import SearchIcon from "@material-ui/icons/Search";
 import ListItem from "../ListItem";
 import { useStyles } from "./MuiStyles";
+import { RenderStockList } from "./RenderStockList";
+import getAllControlledStock from "../../Requests/getAllControlledStock";
 
 const AddStockModal = () => {
   const [stockList, setStockList] = useState([]);
   const [stockInfo, setStockInfo] = useState({});
+  const [search, setSearch] = useState("");
+  const [anchorEl, setAnchorEl] = useState(null);
   const classes = useStyles();
 
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
   async function fetchStockList() {
     setStockList(await getStockList());
   }
   async function fetchStockInfo(ticker) {
+    console.log(ticker);
     setStockInfo(await searchStock(ticker));
   }
   async function addStock(ticker) {
     await addToControlledStock(ticker);
+    await fetchStockInfo(ticker);
+    await fetchStockList();
+    await getAllControlledStock();
   }
 
   const stockDetails = {
@@ -62,19 +74,28 @@ const AddStockModal = () => {
             </div>
             <div className="main-add-stock-modal-upper-right">
               <div className="main-add-stock-modal-upper-box">
-                <Autocomplete
-                  id="combo-box-demo"
-                  options={stockList}
-                  getOptionLabel={(option) => option?.ticker}
-                  style={{ width: 200, padding: 15 }}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Combo box"
-                      variant="outlined"
-                    />
-                  )}
-                  onInputChange={(_, value) => fetchStockInfo(value)}
+                <div style={{ paddingRight: 5 }}>
+                  <IconButton onClick={() => fetchStockInfo(search)}>
+                    <SearchIcon />
+                  </IconButton>
+                </div>
+                <TextField
+                  label="Ticker"
+                  variant="outlined"
+                  value={search}
+                  style={{ width: 100 }}
+                  onChange={(event) => setSearch(event.target.value)}
+                />
+                <div style={{ paddingRight: 5, paddingLeft: 5 }}>
+                  <IconButton onClick={handleClick}>
+                    <KeyboardArrowDownIcon />
+                  </IconButton>
+                </div>
+                <RenderStockList
+                  anchorEl={anchorEl}
+                  data={stockList}
+                  search={setSearch}
+                  setAnchorEl={setAnchorEl}
                 />
               </div>
             </div>

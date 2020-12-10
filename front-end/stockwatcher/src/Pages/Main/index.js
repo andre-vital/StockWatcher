@@ -3,16 +3,21 @@ import "./styles.css";
 import Header from "../../GlobalComponents/Header";
 import StockTable from "./Components/StockTable";
 import AddStockModal from "./Components/AddStockModal";
+import mainBackground from "../../assets/images/mainBackground.jpeg";
+import Logout from "../../GlobalComponents/Logout";
 
-const MainPage = ({ ...props }) => {
-  console.log({ props });
+const MainPage = () => {
   return (
-    <div className="main-page-wrapper">
-      <Header>
-        <AddStockModal {...props} />
-      </Header>
-      <StockTable {...props} />
-    </div>
+    <>
+      <div className="main-page-wrapper">
+        <Header>
+          <AddStockModal />
+          <Logout />
+        </Header>
+        <img className="main-image" src={mainBackground} alt="pic" />
+        <StockTable />
+      </div>
+    </>
   );
 };
 
