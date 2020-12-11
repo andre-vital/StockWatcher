@@ -1,24 +1,23 @@
 import { ThemeProvider } from "@material-ui/styles";
-import { useHistory } from "react-router-dom";
 import React, { useState } from "react";
 import "./styles.css";
 import { CssTextField } from "./CssTextField";
 import { theme } from "./MuiTheme";
 import { Button } from "@material-ui/core";
-import attemptLogin from "../../Requests/attemptLogin";
+import attemptSignup from "../../Requests/attemptSignup";
 
-const LoginBox = ({ setSwitch }) => {
-  const history = useHistory();
+const SignupBox = ({ setSwitch }) => {
   const [userData, setUserData] = useState({
     username: "",
     password: "",
+    email: "",
+    name: "",
   });
 
-  async function handleLogin() {
-    const result = await attemptLogin(userData);
-    console.log({ result });
-    if (result) {
-      history.push("/main");
+  async function handleSignup() {
+    const message = await attemptSignup(userData);
+    if (message === "Created User") {
+      setSwitch(false);
     }
   }
 
@@ -45,30 +44,20 @@ const LoginBox = ({ setSwitch }) => {
   };
 
   return (
-    <div className="login-page-login-box">
+    <div className="login-page-signup-box">
       <ThemeProvider theme={theme}>
-        <CssTextField {...textFieldProps} label="Username" name="username" />
+        <CssTextField {...textFieldProps} label="Name" name="name" />
       </ThemeProvider>
+      <CssTextField {...textFieldProps} label="Username" name="username" />
       <CssTextField {...textFieldProps} label="Password" name="password" />
+      <CssTextField {...textFieldProps} label="E-mail" name="email" />
       <div style={{ marginBottom: 10 }}>
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={() => {
-            handleLogin();
-          }}
-        >
-          Login
-        </Button>
-      </div>
-      <div style={{ color: "white", margin: 5 }}>Não possui conta?</div>
-      <div style={{ padding: 5 }}>
-        <Button color="secondary" onClick={() => setSwitch(true)}>
-          Cadastre-se
+        <Button variant="contained" color="secondary" onClick={handleSignup}>
+          Cadastrar
         </Button>
       </div>
     </div>
   );
 };
 
-export default LoginBox;
+export default SignupBox;

@@ -13,7 +13,7 @@ const Logout = () => {
 
   return (
     <IconButton onClick={handleClick}>
-      <ExitToAppIcon />
+      <ExitToAppIcon style={{ fill: "white" }} />
     </IconButton>
   );
 };

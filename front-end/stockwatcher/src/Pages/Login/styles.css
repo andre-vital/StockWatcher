@@ -13,11 +13,11 @@
   display: flex;
   justify-content: center;
   align-content: center;
+  margin-bottom: 20px;
 }
 
 .login-page-title {
   z-index: 20;
-  color: orange;
   display: flex;
   line-height: 200px;
   font-size: 72px;
@@ -35,5 +35,16 @@
   flex: 0;
   filter: brightness(50%);
   position: fixed;
+  z-index: 1;
+}
+
+.login-main-logo {
+  z-index: 1;
+  width: 250px;
+  height: 250px;
+  margin: 25px;
+}
+
+.login-page-box-container {
   z-index: 1;
 }

@@ -11,7 +11,7 @@ import StockTableRow from "./StockTableRow";
 import { useStyles } from "./MuiStyles";
 import editStockInfo from "../../Requests/editStockInfo";
 
-const background = { background: "rgb(224, 97, 58)" };
+const background = { opacity: "0.8" };
 
 const StockTable = () => {
   const [controlledStock, setControlledStock] = useState([]);

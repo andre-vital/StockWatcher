@@ -58,7 +58,7 @@ const AddStockModal = () => {
   }, []);
 
   return (
-    <Modal disclosure={<AddCircleOutlineIcon />}>
+    <Modal disclosure={<AddCircleOutlineIcon style={{ fill: "white" }} />}>
       <Paper elevation={10}>
         <div className="main-add-stock-modal-container">
           <div className="main-add-stock-modal-upper">

@@ -6,27 +6,50 @@
   position: fixed;
   z-index: 30;
   box-shadow: 1px 1px 5px black;
-  background-color: rgb(224, 97, 58);
+  background-color: rgb(216, 216, 216, 0.3);
+
+  /* background-color: rgb(224, 97, 58); */
 }
 
 .header-left-container {
   flex: 0.25;
-  background-color: rgb(224, 97, 58);
+  display: flex;
+  flex-direction: row;
+  margin-left: 15px;
+  align-items: center;
+  /* background-color: rgb(224, 97, 58); */
   /* background-color: aqua; */
 }
 
 .header-middle-container {
   flex: 0.5;
-  background-color: rgb(224, 97, 58);
+  /* background-color: rgb(224, 97, 58); */
   /* background-color: green; */
 }
 
 .header-right-container {
-  background-color: rgb(224, 97, 58);
+  /* background-color: rgb(224, 97, 58); */
   flex: 0.25;
   display: flex;
   align-items: center;
   justify-content: flex-end;
   padding-right: 10px;
+
+  /* background-color: transparent; */
   /* background-color: red; */
+}
+
+.main-header-logo {
+  z-index: 30;
+  width: 35px;
+  height: 35px;
+}
+
+.main-page-title {
+  z-index: 30;
+  display: flex;
+  font-size: 20px;
+  font-family: serif;
+  color: white;
+  margin-left: 15px;
 }
