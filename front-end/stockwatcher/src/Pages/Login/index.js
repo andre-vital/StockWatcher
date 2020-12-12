@@ -20,7 +20,9 @@ const LoginPage = () => {
       ) : (
         <LoginBox setSwitch={setSwitchTo} />
       )}
-      <img className="login-main-image" src={loginBackground} alt="pic" />
+      <div className="login-main-image-container">
+        <img className="login-main-image" src={loginBackground} alt="pic" />
+      </div>
     </div>
   );
 };

@@ -2,47 +2,54 @@
   width: 100vw;
   height: 100vh;
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   justify-content: center;
 }
 
 .login-page-title-container {
-  width: 100vw;
-  height: 100vh;
+  /* width: 100vw;
+  height: 100vh; */
   z-index: 20;
   display: flex;
-  justify-content: center;
-  align-content: center;
-  margin-bottom: 20px;
+  /* justify-content: center;
+  align-content: center; */
+  margin-bottom: 10px;
 }
 
 .login-page-title {
   z-index: 20;
-  display: flex;
-  line-height: 200px;
+  /* display: flex; */
+  /* line-height: 200px;
   font-size: 72px;
-  font-family: serif;
+  font-family: serif; */
 }
 
 .login-page-body-container {
-  width: 100vw;
-  height: 100vh;
   z-index: 20;
 }
 
 .login-main-image {
-  object-fit: cover;
-  flex: 0;
+  display: flex;
   filter: brightness(50%);
-  position: fixed;
   z-index: 1;
+  width: auto;
+  height: auto;
+}
+
+.login-main-image-container {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  object-fit: cover;
+  position: fixed;
+  margin-top: -100px;
 }
 
 .login-main-logo {
   z-index: 1;
-  width: 250px;
-  height: 250px;
-  margin: 25px;
+  width: 220px;
+  height: 220px;
+  margin: 20px;
 }
 
 .login-page-box-container {

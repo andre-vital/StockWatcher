@@ -26,7 +26,6 @@ const TEXT_FIELD_PROPS = {
   variant: "outlined",
   color: "primary",
   className: "login-page-login-box-input",
-  id: "standard-basic",
   InputLabelProps: {
     style: { color: "white" },
     shrink: true,
@@ -35,7 +34,7 @@ const TEXT_FIELD_PROPS = {
 };
 
 const TextField = (props) => {
-  return <CssTextField {...TEXT_FIELD_PROPS} {...props} />;
+  return <CssTextField id={props.name} {...TEXT_FIELD_PROPS} {...props} />;
 };
 
 export default TextField;
