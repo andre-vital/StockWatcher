@@ -3,7 +3,7 @@ from . import views
 
 urlpatterns = [
     path('add', views.addToControlledStock),
+    path('remove', views.removeFromControlledStock),
     path('configure', views.configureStock),
-    path('values', views.getStockValuesByTimeDiff),
     path('retrieve/all', views.getAllControlledStock)
 ]

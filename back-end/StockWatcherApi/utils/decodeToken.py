@@ -5,8 +5,6 @@ TOKEN_SECRET = LOCAL_SETTINGS['TOKEN_SECRET']
 TOKEN_ALGORITHM = LOCAL_SETTINGS['TOKEN_ALGORITHM']
 
 def decodeToken(token):
-    """
-    """
     try:
         payload = jwt.decode(token, TOKEN_SECRET, TOKEN_ALGORITHM)
         return payload
@@ -14,21 +12,18 @@ def decodeToken(token):
     except:
         return None
 
-
 def encodeToken(payload):
-    """
-    """
     try:
         token = jwt.encode(payload, TOKEN_SECRET, TOKEN_ALGORITHM).decode('utf-8')
         return token
 
-    except Exception as e:
-        print(e)
+    except:
         return None
 
 
 def recoverUserIdFromToken(token):
     payload = decodeToken(token)
-    userId = payload['userId']
+    if payload is None:
+        return None
 
-    return userId
+    return payload['userId']

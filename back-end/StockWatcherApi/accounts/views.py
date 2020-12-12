@@ -1,10 +1,14 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.views.decorators.http import require_POST
 from .models import User
 import json
 import hashlib
 from utils.decodeToken import encodeToken
+from utils.passwordValidator import passwordValidator
 # Create your views here.
+
+@require_POST
 def signup(request):
     """
     Creates an user.
@@ -18,42 +22,36 @@ def signup(request):
     output:
     A message regarding the result of the account creation
     """
+    signupData = request.POST
 
-    if request.method != 'POST':
-        res = json.dumps({'error': 'Request MUST be a POST instead of ' + request.method})
-        return HttpResponse(res, content_type='application/json')
+    isPasswordValid = passwordValidator(signupData['password'])
+    isUsernameInUse = User.objects.filter(username = signupData['username']).exists()
+    isEmailInUse = User.objects.filter(email = signupData['email']).exists()
+    if isEmailInUse:
+        response = json.dumps({'error': 'Email already in use'})
 
-    try:
-        signupData = request.POST
-        usernameInUse = User.objects.filter(username = signupData['username']).exists()
-        emailInUse = User.objects.filter(email = signupData['email']).exists()
-        if emailInUse:
-            response = json.dumps({'error': 'Email already in use'})
+    elif isUsernameInUse:
+        response = json.dumps({'error': 'Username already in use'})
+    
+    elif isPasswordValid:
+        response = json.dumps({'error': 'Password not valid'})
 
-        elif usernameInUse:
-            response = json.dumps({'error': 'Username already in use'})
+    else:
+        hashedPassword = hashlib.sha256(signupData['password'].encode('utf-8')).hexdigest()
 
-        else:
-            hashedPassword = hashlib.sha256(signupData['password'].encode('utf-8')).hexdigest()
+        user = User(
+            username = signupData['username'],
+            name = signupData['name'],
+            password = hashedPassword,
+            email = signupData['email'],
+        )
+        user.save()
 
-            user = User(
-                username = signupData['username'],
-                name = signupData['name'],
-                password = hashedPassword,
-                email = signupData['email'],
-            )
-
-            user.save()
-
-            response = json.dumps({'message': 'Created User'})
-
-    except Exception as e:
-        print(e)
-        response = json.dumps({'error': 'Could not create User'})
-            
-
+        response = json.dumps({'message': 'Created User'})
+  
     return HttpResponse(response, content_type='application/json')
- 
+
+@require_POST
 def login(request):
     """
     Logs into the platform.
@@ -65,10 +63,6 @@ def login(request):
     output:
     logs into the platform and creates a token for validation.
     """
-    if request.method != 'POST':
-        res = json.dumps({'error': 'Request MUST be a POST instead of ' + request.method})
-        return HttpResponse(res, content_type='application/json')
-
     loginData = request.POST
     usernameGuess = loginData['username']
     passwordGuess = loginData['password']
@@ -76,24 +70,16 @@ def login(request):
         user = User.objects.get(username = usernameGuess)
         hashedPasswordGuess = hashlib.sha256(passwordGuess.encode('utf-8')).hexdigest()
         if hashedPasswordGuess != user.password:
-            res = json.dumps({"token":'','success': False})
-            return HttpResponse(res, content_type='application/json')
+            response = json.dumps({"token":'','error': 'Wrong password'})
+            return HttpResponse(response, content_type='application/json')
 
         payload = {
             'userId': user.id,
         }
-        print(payload)
         token = encodeToken(payload)
-        print(token)
-        res = json.dumps({"token":token, "success":True})
+        response = json.dumps({"token":token, "success":'Token made'})
 
-    except Exception as e:
-        res = json.dumps({"token":'','success': False})
-        print(e)
-        return HttpResponse(res, content_type='application/json')
+    except:
+        response = json.dumps({"token":'','error': "Unable to retrieve token"})
 
-
-        
-    
-
-    return HttpResponse(res, content_type='application/json')
+    return HttpResponse(response, content_type='application/json')

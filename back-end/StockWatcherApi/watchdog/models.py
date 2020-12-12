@@ -8,12 +8,12 @@ class ControlledStock(models.Model):
     """
     stock = models.ForeignKey(Stock, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    updateInterval = models.IntegerField(default = 0)
-    buyPrice = models.FloatField(default = 0)
-    sellPrice = models.FloatField(default = 0)
+    updateInterval = models.IntegerField(default = 5)
+    buyPrice = models.FloatField(default = None, null=True, blank=True)
+    sellPrice = models.FloatField(default = None, null=True, blank=True)
     active = models.BooleanField(default = True)
 
-class Value(models.Model):
+class StockData(models.Model):
     """
     """
     controlledStock = models.ForeignKey('ControlledStock', on_delete=models.CASCADE)

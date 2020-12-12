@@ -10,6 +10,6 @@ class EmailLog(models.Model):
     sent = models.BooleanField(default=False)
     dispatchTime = models.DateTimeField(auto_now_add=True)
     action = models.CharField(max_length=10)
-    priceChecker = models.FloatField(default = 0)
+    priceChecker = models.FloatField(null=True, blank=True, default=None)
 
 

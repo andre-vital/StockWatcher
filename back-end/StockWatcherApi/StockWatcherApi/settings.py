@@ -26,7 +26,7 @@ SECRET_KEY = 'cp-h47hdk5p40w_mvvjagot8bzfygsjma$rr8p&1#z$1!eaq!i'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.0.72', '127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -128,9 +128,6 @@ STATIC_URL = '/static/'
 AVATAR_URL = '/assets/avatar/images'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'assets/avatar/images')
 
-# CRONJOBS = [
-#     ('* * * * *', 'watchdog.watchdogCron.testPrinter')
-# ]
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
@@ -144,10 +141,3 @@ CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_IMPORTS = [ 'watchdog.tasks','emails.tasks']
-# CELERY_BEAT_SCHEDULE = {
-#     "watchdog.tasks.testPrinter": {
-#         "task": "watchdog.tasks.testPrinter",
-#         "schedule": 5.0,
-#     },
-# }
-# CELERY_TIMEZONE = 'Africa/Nairobi'

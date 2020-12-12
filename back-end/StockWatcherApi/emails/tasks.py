@@ -1,19 +1,18 @@
 from __future__ import absolute_import, unicode_literals
 from django.conf import settings
 from django.core.mail import send_mail
-from watchdog.models import ControlledStock, Value
+from watchdog.models import ControlledStock, StockData
 from .models import EmailLog
 from datetime import datetime, timedelta
-import json
 from celery import shared_task
 
-def composeAndSendEmail(controlledStock, value):
+def composeAndSendEmail(controlledStock, stockData, action):
     try:
-        action = "comprar" if controlledStock.buyPrice > value.price else "vender"
-        time = datetime.strftime(value.updatedAt, "%H:%M:%S")
+        translator = "comprar" if action == 'buy' else "vender"
+        time = datetime.strftime(stockData.updatedAt, "%H:%M:%S")
         subject = f"StockWatcher: ta na hora de {action}"
         message = f"""
-        O preço da {controlledStock.stock.name} atingiu o valor de {value.price}.
+        O preço da {controlledStock.stock.name} atingiu o valor de {stockData.price}.
         Recomendamos {action} as ações da {controlledStock.stock.name}
 
         A última atualização feita foi às {time}
@@ -31,43 +30,53 @@ def composeAndSendEmail(controlledStock, value):
     except:
         return False
 
-def checkIfEmailWasAlreadySent(stock, price):
-    buy = stock.buyPrice
-    sell = stock.sellPrice
-    priceChecker, action = (buy, "buy") if buy > price else (sell, "sell")
+def checkIfEmailWasAlreadySent(priceChecker, action, stock):
+    
     try:
-        emailLog = EmailLog.objects.filter(controlledStock=stock).latest('id')
+        emailLog = EmailLog.objects.filter(controlledStock=stock, sent=True).latest('id')
     except:
-        return False, priceChecker, action
-
-    if not emailLog.sent:
-        return False, priceChecker, action
+        return False
+    
+    if priceChecker == emailLog.priceChecker and action == emailLog.action:
+        return True
 
     if not datetime.now() > emailLog.dispatchTime + timedelta(days = 1):
-        return True, priceChecker, action
+        return True
     
-    return False, priceChecker, action
+    return False
 
+def determineAction(stock, price):
+    buyPrice = stock.buyPrice
+    sellPrice = stock.sellPrice
+    if sellPrice < price:
+        return 'sell'
+    
+    if buyPrice > price:
+        return 'buy'
+    
+    return None
 
 @shared_task
 def sendEmailFeedback():
-    controlledStocks = ControlledStock.objects.all()
-    for stock in controlledStocks:
-        if not stock.active:
+    controlledStocks = ControlledStock.objects.filter(active=True)
+    for stock in controlledStocks: 
+        stockData = StockData.objects.filter(controlledStock=stock).latest('id')
+        price = stockData.price
+        action = determineAction(stock, price)
+        if action is None:
             continue
 
-        buyPrice = stock.buyPrice
-        sellPrice = stock.sellPrice
-        value = Value.objects.filter(controlledStock=stock).latest('id')
-        price = value.price
-        if not buyPrice > price and not sellPrice < price:
-            continue
+        elif action is 'sell':
+            priceChecker = stock.sellPrice
 
-        wasSent, priceChecker, action = checkIfEmailWasAlreadySent(stock, price)
+        else:
+            priceChecker = stock.buyPrice
+
+        wasSent = checkIfEmailWasAlreadySent(priceChecker, action, stock)
         if wasSent:
             continue
         
-        sent = composeAndSendEmail(stock, value) 
+        sent = composeAndSendEmail(stock, stockData, action) 
         emailLog = EmailLog(
             controlledStock = stock,
             sent = sent,
