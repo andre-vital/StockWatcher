@@ -1,7 +1,7 @@
 # StockWatcher
 ## Demo
 
-
+![StockWatcher Demo](assets/readme/screen-capture.webm)
 
 ## Setup
 
