@@ -30,11 +30,11 @@ python3 manage.py makemigrations
 python3 manage.py migrate
 python3 manage.py runserver 0.0.0.0:8000
 ```
-##### 6. Starting up celery worker for scheduled tasks (must be on the your virtual environment and on the same directory as the manage.py).
+##### 6. Starting celery worker for scheduled tasks (must be on the your virtual environment and on the same directory as the manage.py).
 ```sh 
 celery -A StockWatcherApi worker -l INFO
 ```
-##### 7. Starting up celery beat (the same thing for the worker).
+##### 7. Starting celery beat (the same thing for the worker).
 ```sh 
 celery -A StockWatcherApi beat -l INFO
 ```
