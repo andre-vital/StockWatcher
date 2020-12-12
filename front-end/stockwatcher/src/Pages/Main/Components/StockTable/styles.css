@@ -2,14 +2,14 @@
   display: flex;
   /* flex: 0.9; */
   height: 95vh;
-  width: 98vw;
+  width: 1200px;
   /* position: fixed; */
   justify-content: center;
   align-items: center;
   position: fixed;
   z-index: 10;
-  padding: 15px;
-  box-shadow: 5px 5px 5px black;
+  /* padding: 15px; */
+  /* box-shadow: 5px 5px 5px black; */
   /* overflow: hidden; */
 }
 
@@ -30,7 +30,8 @@
   /* flex: 0.9; */
   /* float: 1; */
   /* position: fixed; */
-  /* background-color: rgb(224, 97, 58); */
+  /* color: rgb(224, 97, 58); */
+  justify-content: space-between;
   /* width: 50%; */
   /* justify-self: center;
   align-self: center; */

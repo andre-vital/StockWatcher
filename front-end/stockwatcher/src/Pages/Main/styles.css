@@ -6,6 +6,7 @@
   width: 100vw;
   /* background-color: red; */
   overflow: hidden;
+  align-items: center;
 }
 
 .main-image {

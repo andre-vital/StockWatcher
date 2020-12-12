@@ -1,8 +1,7 @@
 import { ThemeProvider } from "@material-ui/styles";
 import React, { useState } from "react";
 import "./styles.css";
-import { CssTextField } from "./CssTextField";
-import { theme } from "./MuiTheme";
+import TextField, { theme } from "../../../../GlobalComponents/TextField";
 import { Button } from "@material-ui/core";
 import attemptSignup from "../../Requests/attemptSignup";
 
@@ -28,30 +27,30 @@ const SignupBox = ({ setSwitch }) => {
     });
   };
 
-  const inputProps = {
-    style: { color: "white" },
-    shrink: true,
-    disableAnimation: true,
-  };
-
-  const textFieldProps = {
-    variant: "outlined",
-    color: "primary",
-    onChange: handleChange,
-    className: "login-page-login-box-input",
-    id: "standard-basic",
-    InputLabelProps: inputProps,
-  };
-
   return (
     <div className="login-page-signup-box">
       <ThemeProvider theme={theme}>
-        <CssTextField {...textFieldProps} label="Name" name="name" />
+        <TextField onChange={handleChange} label="Name" name="name" />
       </ThemeProvider>
-      <CssTextField {...textFieldProps} label="Username" name="username" />
-      <CssTextField {...textFieldProps} label="Password" name="password" />
-      <CssTextField {...textFieldProps} label="E-mail" name="email" />
-      <div style={{ marginBottom: 10 }}>
+      <TextField onChange={handleChange} label="Username" name="username" />
+      <TextField
+        onChange={handleChange}
+        type="password"
+        label="Password"
+        name="password"
+      />
+      <TextField onChange={handleChange} label="E-mail" name="email" />
+      <div
+        style={{
+          marginBottom: 10,
+          justifyContent: "space-between",
+          width: "80%",
+          display: "flex",
+        }}
+      >
+        <Button color="secondary" onClick={() => setSwitch(false)}>
+          Voltar
+        </Button>
         <Button variant="contained" color="secondary" onClick={handleSignup}>
           Cadastrar
         </Button>

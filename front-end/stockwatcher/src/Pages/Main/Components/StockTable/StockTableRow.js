@@ -3,13 +3,15 @@ import Collapse from "@material-ui/core/Collapse";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import Chart from "../Chart";
-import { IconButton, TextField } from "@material-ui/core";
+import { IconButton } from "@material-ui/core";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import Create from "@material-ui/icons/Create";
 import Check from "@material-ui/icons/Check";
+import EditableField from "./EditableField";
 
 const StockTableRow = ({ rowData, editInfo }) => {
+  const INTERVALS = [5, 15, 30, 60];
   const [open, setOpen] = useState(false);
   const [edit, setEdit] = useState(false);
   const [values, setValues] = useState({
@@ -37,14 +39,16 @@ const StockTableRow = ({ rowData, editInfo }) => {
     });
   };
 
+  const TEXT_FIELD_PROPS = {
+    onChange: handleChange,
+    values: values,
+    edit: edit,
+  };
+
   return (
     <>
       <TableRow key={rowData.name}>
-        <IconButton
-          aria-label="expand row"
-          size="small"
-          onClick={() => setOpen(!open)}
-        >
+        <IconButton size="small" onClick={() => setOpen(!open)}>
           {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
         </IconButton>
         <TableCell component="th" scope="row">
@@ -52,41 +56,23 @@ const StockTableRow = ({ rowData, editInfo }) => {
         </TableCell>
         <TableCell align="right">{rowData?.values[0].price}</TableCell>
         <TableCell align="right">
-          {edit ? (
-            <TextField
-              name="buyPrice"
-              defaultValue={values.buyPrice}
-              onChange={handleChange}
-            />
-          ) : (
-            values.buyPrice
-          )}
+          <EditableField {...TEXT_FIELD_PROPS} type="buyPrice" />
         </TableCell>
         <TableCell align="right">
-          {edit ? (
-            <TextField
-              name="sellPrice"
-              defaultValue={values.sellPrice}
-              onChange={handleChange}
-            />
-          ) : (
-            values.sellPrice
-          )}
+          <EditableField {...TEXT_FIELD_PROPS} type="sellPrice" />
         </TableCell>
         <TableCell align="right">{rowData?.values[0].marketCap}</TableCell>
         <TableCell align="right">
-          {edit ? (
-            <TextField
-              name="updateInterval"
-              defaultValue={values.updateInterval}
-              onChange={handleChange}
-            />
-          ) : (
-            values.updateInterval
-          )}
+          <EditableField {...TEXT_FIELD_PROPS} type="updateInterval">
+            {INTERVALS.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </EditableField>
         </TableCell>
         <TableCell align="right">
-          <IconButton onClick={() => openConfigurables()}>
+          <IconButton size="small" onClick={() => openConfigurables()}>
             {edit ? <Check /> : <Create />}
           </IconButton>
         </TableCell>
@@ -99,4 +85,5 @@ const StockTableRow = ({ rowData, editInfo }) => {
     </>
   );
 };
+
 export default StockTableRow;

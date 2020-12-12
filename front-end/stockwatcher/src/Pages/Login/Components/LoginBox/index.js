@@ -2,8 +2,7 @@ import { ThemeProvider } from "@material-ui/styles";
 import { useHistory } from "react-router-dom";
 import React, { useState } from "react";
 import "./styles.css";
-import { CssTextField } from "./CssTextField";
-import { theme } from "./MuiTheme";
+import TextField, { theme } from "../../../../GlobalComponents/TextField";
 import { Button } from "@material-ui/core";
 import attemptLogin from "../../Requests/attemptLogin";
 
@@ -29,27 +28,17 @@ const LoginBox = ({ setSwitch }) => {
     });
   };
 
-  const inputProps = {
-    style: { color: "white" },
-    shrink: true,
-    disableAnimation: true,
-  };
-
-  const textFieldProps = {
-    variant: "outlined",
-    color: "primary",
-    onChange: handleChange,
-    className: "login-page-login-box-input",
-    id: "standard-basic",
-    InputLabelProps: inputProps,
-  };
-
   return (
     <div className="login-page-login-box">
       <ThemeProvider theme={theme}>
-        <CssTextField {...textFieldProps} label="Username" name="username" />
+        <TextField onChange={handleChange} label="Username" name="username" />
       </ThemeProvider>
-      <CssTextField {...textFieldProps} label="Password" name="password" />
+      <TextField
+        onChange={handleChange}
+        type="password"
+        label="Password"
+        name="password"
+      />
       <div style={{ marginBottom: 10 }}>
         <Button
           variant="contained"

@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { Paper, TableContainer } from "@material-ui/core";
+import { IconButton, Paper, TableContainer } from "@material-ui/core";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import Refresh from "@material-ui/icons/Refresh";
 import getAllControlledStock from "../../Requests/getAllControlledStock";
-import "./styles.css";
 import StockTableRow from "./StockTableRow";
 import { useStyles } from "./MuiStyles";
 import editStockInfo from "../../Requests/editStockInfo";
+import "./styles.css";
 
-const background = { opacity: "0.8" };
+const background = { backgroundColor: "#cccac6" };
 
 const StockTable = () => {
   const [controlledStock, setControlledStock] = useState([]);
@@ -29,8 +30,8 @@ const StockTable = () => {
     "Valor",
     "Compra",
     "Venda",
-    "Valor de mercado",
-    "Intervalo de Atualização",
+    "Valor de mercado (BRL)",
+    "Intervalo de Atualização (m)",
   ];
 
   useEffect(() => {
@@ -42,9 +43,13 @@ const StockTable = () => {
     <div className="main-stock-table-container">
       <TableContainer className={classes.table} component={Paper}>
         <Table stickyHeader aria-label="customized table">
-          <TableHead>
+          <TableHead style={background}>
             <TableRow className="main-stock-table-row">
-              <TableCell style={background} />
+              <TableCell style={background}>
+                <IconButton onClick={fetchControlledStock}>
+                  <Refresh />
+                </IconButton>
+              </TableCell>
               <TableCell style={background}>Empresa</TableCell>
               {tableHeader.map((name) => (
                 <TableCell style={background} align="right">
