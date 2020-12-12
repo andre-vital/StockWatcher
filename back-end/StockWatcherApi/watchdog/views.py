@@ -124,7 +124,7 @@ def getAllControlledStock(request):
             response = json.dumps({'Error': "User not found"})
             return HttpResponse(response, content_type='application/json')
 
-        controlledStocks = ControlledStock.objects.filter(user_id=userId)
+        controlledStocks = ControlledStock.objects.filter(user_id=userId, active=True)
         myStocks = []
 
         for controlledStock in controlledStocks:
@@ -149,27 +149,27 @@ def getAllControlledStock(request):
     return HttpResponse(response, content_type='application/json')
 
 @require_POST
-def removeFromControlledStock():
+def removeFromControlledStock(request):
     """
     Removes a specific stock from users controlled stock list.
 
     parameters:
-    -ticker: to link the ControlledStock table with the Stock table
-    -userId: to link the ControlledStock table with the User table
+    -controlledStockId: to find the stock to be removed
+    -token: to see if it's a valid user
 
     output:
     No output
     """
     try:
         stockData = request.POST
-        ticker = stockData['ticker']
+        controlledStockId = stockData['controlledStockId']
         token = stockData['token']
         userId = recoverUserIdFromToken(token)
         if userId is None:
             response = json.dumps({'Error': "User not found"})
             return HttpResponse(response, content_type='application/json')
 
-        controlledStock = ControlledStock.objects.get(stock__ticker=ticker, user_id=userId)
+        controlledStock = ControlledStock.objects.get(id=controlledStockId)
         controlledStock.active = False
         controlledStock.save()
         response = json.dumps({'Success': "User not found"})
