@@ -2,8 +2,6 @@ from __future__ import absolute_import, unicode_literals
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import ControlledStock, Value
-from stockFinder.models import Stock
-from accounts.models import User
 from utils.getStockInfo import getStockInfo
 from datetime import datetime
 import json

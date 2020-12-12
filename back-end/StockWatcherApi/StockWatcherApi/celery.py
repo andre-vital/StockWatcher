@@ -17,6 +17,10 @@ app.conf.beat_schedule = {
         'task': 'watchdog.tasks.retrieveStocksPeriodically',
         'schedule': 60.0,
     },
+    'sendEmailFeedback': {
+        'task': 'emails.tasks.sendEmailFeedback',
+        'schedule': 60.0,
+    },
 }
 
 app.autodiscover_tasks()
