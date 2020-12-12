@@ -3,10 +3,6 @@
 
 ![StockWatcher Demo](assets/readme/screen-capture.gif)
 
-## Setup
-
-## Requirements
-
 ## Build
 
 ### Setup the server
