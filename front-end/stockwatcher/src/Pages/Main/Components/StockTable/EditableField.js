@@ -21,7 +21,12 @@ const EditableField = ({ children, type, ...props }) => {
     );
   } else {
     return edit ? (
-      <TextField name={type} defaultValue={values[type]} {...props} />
+      <TextField
+        name={type}
+        defaultValue={values[type]}
+        style={{ width: 50 }}
+        {...props}
+      />
     ) : (
       values[type]
     );

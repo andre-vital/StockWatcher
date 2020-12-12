@@ -1,7 +1,6 @@
-import { ThemeProvider } from "@material-ui/styles";
 import React, { useState } from "react";
 import "./styles.css";
-import TextField, { theme } from "../../../../GlobalComponents/TextField";
+import TextField from "../../../../GlobalComponents/TextField";
 import { Button } from "@material-ui/core";
 import attemptSignup from "../../Requests/attemptSignup";
 
@@ -29,20 +28,27 @@ const SignupBox = ({ setSwitch }) => {
 
   return (
     <div className="login-page-signup-box">
-      <ThemeProvider theme={theme}>
+      <div style={{ margin: 15 }}>
         <TextField onChange={handleChange} label="Name" name="name" />
-      </ThemeProvider>
-      <TextField onChange={handleChange} label="Username" name="username" />
-      <TextField
-        onChange={handleChange}
-        type="password"
-        label="Password"
-        name="password"
-      />
-      <TextField onChange={handleChange} label="E-mail" name="email" />
+      </div>
+      <div style={{ margin: 15 }}>
+        <TextField onChange={handleChange} label="Username" name="username" />
+      </div>
+      <div style={{ margin: 15 }}>
+        <TextField
+          onChange={handleChange}
+          type="password"
+          label="Password"
+          name="password"
+        />
+      </div>
+      <div style={{ margin: 15 }}>
+        <TextField onChange={handleChange} label="E-mail" name="email" />
+      </div>
       <div
         style={{
-          marginBottom: 10,
+          marginTop: 15,
+          marginBottom: 15,
           justifyContent: "space-between",
           width: "80%",
           display: "flex",

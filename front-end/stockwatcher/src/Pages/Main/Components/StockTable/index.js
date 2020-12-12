@@ -28,14 +28,13 @@ const StockTable = () => {
 
   const tableHeader = [
     "Valor",
+    "Valor de mercado (BRL)",
     "Compra",
     "Venda",
-    "Valor de mercado (BRL)",
     "Intervalo de Atualização (m)",
   ];
 
   useEffect(() => {
-    console.log("teste");
     fetchControlledStock();
   }, []);
 
@@ -60,8 +59,12 @@ const StockTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {controlledStock.map((row) => (
-              <StockTableRow rowData={row} editInfo={editStock} />
+            {controlledStock?.map((row) => (
+              <StockTableRow
+                rowData={row}
+                editInfo={editStock}
+                refresh={fetchControlledStock}
+              />
             ))}
           </TableBody>
         </Table>

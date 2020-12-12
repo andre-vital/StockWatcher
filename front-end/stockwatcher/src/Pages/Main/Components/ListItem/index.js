@@ -11,5 +11,5 @@ const ListItem = ({ title, value }) => {
     </div>
   );
 };
-// ListItem.handleOpen = handleOpen
+
 export default ListItem;

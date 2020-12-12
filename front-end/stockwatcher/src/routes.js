@@ -7,9 +7,6 @@ import isAuthenticated from "./auth";
 function PrivateRoute({ component: Component, ...rest }) {
   const isLogged = isAuthenticated();
 
-  // const isLogged = false
-  console.log({ isLogged });
-
   return (
     <Route
       {...rest}

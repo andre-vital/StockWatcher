@@ -8,9 +8,11 @@ import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import Create from "@material-ui/icons/Create";
 import Check from "@material-ui/icons/Check";
+import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import EditableField from "./EditableField";
+import removeFromControlledStock from "../../Requests/removeFromControlledStock";
 
-const StockTableRow = ({ rowData, editInfo }) => {
+const StockTableRow = ({ rowData, editInfo, refresh }) => {
   const INTERVALS = [5, 15, 30, 60];
   const [open, setOpen] = useState(false);
   const [edit, setEdit] = useState(false);
@@ -31,6 +33,11 @@ const StockTableRow = ({ rowData, editInfo }) => {
     } else {
     }
   };
+
+  async function removeStock() {
+    await removeFromControlledStock(rowData?.values[0].controlledStock_id);
+    await refresh();
+  }
 
   const handleChange = (event) => {
     setValues({
@@ -55,13 +62,13 @@ const StockTableRow = ({ rowData, editInfo }) => {
           {rowData?.name}
         </TableCell>
         <TableCell align="right">{rowData?.values[0].price}</TableCell>
+        <TableCell align="right">{rowData?.values[0].marketCap}</TableCell>
         <TableCell align="right">
           <EditableField {...TEXT_FIELD_PROPS} type="buyPrice" />
         </TableCell>
         <TableCell align="right">
           <EditableField {...TEXT_FIELD_PROPS} type="sellPrice" />
         </TableCell>
-        <TableCell align="right">{rowData?.values[0].marketCap}</TableCell>
         <TableCell align="right">
           <EditableField {...TEXT_FIELD_PROPS} type="updateInterval">
             {INTERVALS.map((option) => (
@@ -74,6 +81,9 @@ const StockTableRow = ({ rowData, editInfo }) => {
         <TableCell align="right">
           <IconButton size="small" onClick={() => openConfigurables()}>
             {edit ? <Check /> : <Create />}
+          </IconButton>
+          <IconButton size="small" onClick={removeStock}>
+            <HighlightOffIcon />
           </IconButton>
         </TableCell>
       </TableRow>

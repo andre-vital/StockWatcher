@@ -1,8 +1,7 @@
-import { ThemeProvider } from "@material-ui/styles";
 import { useHistory } from "react-router-dom";
 import React, { useState } from "react";
 import "./styles.css";
-import TextField, { theme } from "../../../../GlobalComponents/TextField";
+import TextField from "../../../../GlobalComponents/TextField";
 import { Button } from "@material-ui/core";
 import attemptLogin from "../../Requests/attemptLogin";
 
@@ -15,7 +14,6 @@ const LoginBox = ({ setSwitch }) => {
 
   async function handleLogin() {
     const result = await attemptLogin(userData);
-    console.log({ result });
     if (result) {
       history.push("/main");
     }
@@ -30,15 +28,17 @@ const LoginBox = ({ setSwitch }) => {
 
   return (
     <div className="login-page-login-box">
-      <ThemeProvider theme={theme}>
+      <div style={{ margin: 30 }}>
         <TextField onChange={handleChange} label="Username" name="username" />
-      </ThemeProvider>
-      <TextField
-        onChange={handleChange}
-        type="password"
-        label="Password"
-        name="password"
-      />
+      </div>
+      <div style={{ marginBottom: 20 }}>
+        <TextField
+          onChange={handleChange}
+          type="password"
+          label="Password"
+          name="password"
+        />
+      </div>
       <div style={{ marginBottom: 10 }}>
         <Button
           variant="contained"

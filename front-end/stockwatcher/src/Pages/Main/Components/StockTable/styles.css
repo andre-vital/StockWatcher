@@ -1,39 +1,19 @@
 .main-stock-table-container {
   display: flex;
-  /* flex: 0.9; */
   height: 95vh;
   width: 1200px;
-  /* position: fixed; */
   justify-content: center;
   align-items: center;
   position: fixed;
   z-index: 10;
-  /* padding: 15px; */
-  /* box-shadow: 5px 5px 5px black; */
-  /* overflow: hidden; */
 }
 
 .main-stock-table {
-  /* flex: 0.9; */
-  /* float: 1; */
-  /* position: fixed; */
   height: 90vh;
   width: 70vw;
   padding: 20;
-  /* width: 50%; */
-  /* justify-self: center;
-  align-self: center; */
-  /* overflow: hidden; */
 }
 
 .main-stock-table-row {
-  /* flex: 0.9; */
-  /* float: 1; */
-  /* position: fixed; */
-  /* color: rgb(224, 97, 58); */
   justify-content: space-between;
-  /* width: 50%; */
-  /* justify-self: center;
-  align-self: center; */
-  /* overflow: hidden; */
 }

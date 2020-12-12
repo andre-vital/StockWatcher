@@ -24,13 +24,15 @@ const AddStockModal = () => {
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
   async function fetchStockList() {
     setStockList(await getStockList());
   }
+
   async function fetchStockInfo(ticker) {
-    console.log(ticker);
     setStockInfo(await searchStock(ticker));
   }
+
   async function addStock(ticker) {
     await addToControlledStock(ticker);
     await fetchStockInfo(ticker);

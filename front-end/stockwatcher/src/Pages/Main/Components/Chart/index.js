@@ -13,10 +13,10 @@ import "./styles.css";
 
 const Chart = ({ data }) => {
   const [newData, setNewData] = useState([]);
-  console.log(data);
+
   useEffect(() => {
     setNewData(
-      data?.values.map((entry) => ({
+      data?.values.reverse().map((entry) => ({
         ...entry,
         buyPrice: data?.buyPrice,
         sellPrice: data?.sellPrice,
@@ -60,5 +60,5 @@ const Chart = ({ data }) => {
     </div>
   );
 };
-// Chart.handleOpen = handleOpen
+
 export default Chart;

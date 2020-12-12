@@ -1,6 +1,5 @@
 import TextFieldBase from "@material-ui/core/TextField";
 import { withStyles } from "@material-ui/core/styles";
-import { createMuiTheme } from "@material-ui/core/styles";
 
 export const CssTextField = withStyles({
   root: {
@@ -8,9 +7,6 @@ export const CssTextField = withStyles({
     "& label.Mui-focused": {
       color: "white",
     },
-    // "& .MuiInput-underline:after": {
-    //   borderBottomColor: "white",
-    // },
     "& .MuiOutlinedInput-root": {
       color: "white",
       "& fieldset": {
@@ -25,16 +21,6 @@ export const CssTextField = withStyles({
     },
   },
 })(TextFieldBase);
-
-export const theme = createMuiTheme({
-  overrides: {
-    MuiTextField: {
-      root: {
-        margin: 15,
-      },
-    },
-  },
-});
 
 const TEXT_FIELD_PROPS = {
   variant: "outlined",
