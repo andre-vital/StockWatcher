@@ -21,4 +21,4 @@ def retrieveStocksPeriodically():
         )
         stockDataList.append(stockData)
 
-    Stock.objects.bulk_create(stockDataList)
+    StockData.objects.bulk_create(stockDataList)

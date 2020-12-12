@@ -23,7 +23,6 @@ def signup(request):
     A message regarding the result of the account creation
     """
     signupData = request.POST
-
     isPasswordValid = passwordValidator(signupData['password'])
     isUsernameInUse = User.objects.filter(username = signupData['username']).exists()
     isEmailInUse = User.objects.filter(email = signupData['email']).exists()
@@ -33,7 +32,7 @@ def signup(request):
     elif isUsernameInUse:
         response = json.dumps({'error': 'Username already in use'})
     
-    elif isPasswordValid:
+    elif not isPasswordValid:
         response = json.dumps({'error': 'Password not valid'})
 
     else:
