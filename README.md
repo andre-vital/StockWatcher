@@ -34,7 +34,7 @@ python3 manage.py runserver 0.0.0.0:8000
 ```sh 
 celery -A StockWatcherApi worker -l INFO
 ```
-##### 7. Starting celery beat (the same thing for the worker).
+##### 7. Starting celery beat (the same thing as the worker).
 ```sh 
 celery -A StockWatcherApi beat -l INFO
 ```
