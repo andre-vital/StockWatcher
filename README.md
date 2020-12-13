@@ -40,7 +40,7 @@ celery -A StockWatcherApi beat -l INFO
 ```
 
 ### Setup the web interface
-##### 1. Enter the the front-end directory
+##### 1. Enter the project's front-end directory
 ```sh
 cd StockWatcher/front-end/stockwatcher
 ```
